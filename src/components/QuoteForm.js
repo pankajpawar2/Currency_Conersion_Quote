@@ -6,20 +6,24 @@ import QuotePrice from "./QuotePrice";
 import currencyData from "../currencyData";
 
 export default function QuoteForm(props) {
+
+  //quoteData state to store response object from OFX API call
+  const [quoteData, setQuoteData] = useState({});
+
   //useState hook to set state of form elements, which will be set when onChange event is triggered on the element
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     phone: undefined,
-    amount: undefined,
+    amount: 1000,
     fromCurrency: "",
     toCurrency: "",
     phoneCountry: "",
     nameError: "",
   });
 
-  const [quoteData, setQuoteData] = useState({});
+  
 
   // OFX API call on form submit
   function handleSubmit(event) {
@@ -105,8 +109,9 @@ export default function QuoteForm(props) {
                 name="phoneCountry"
                 value={formData.phoneCountry}
                 onChange={handleChange}
+                
               >
-                <option value="+61" selected>
+                <option value="+61" >
                   +61
                 </option>
                 <option value="+91">+91</option>
@@ -132,7 +137,7 @@ export default function QuoteForm(props) {
               >
                 <option value="">--Choose--</option>
                 {currencyData.map((currency) => (
-                  <option value={currency.slice(0, 3)}>{currency}</option>
+                  <option key={currencyData.indexOf(currency)} value={currency.slice(0, 3)}>{currency}</option>
                 ))}
               </select>
             </label>
@@ -149,17 +154,17 @@ export default function QuoteForm(props) {
               >
                 <option value="">--Choose--</option>
                 {currencyData.map((currency) => (
-                  <option value={currency.slice(0, 3)}>{currency}</option>
+                  <option key={currencyData.indexOf(currency)} value={currency.slice(0, 3)}>{currency}</option>
                 ))}
               </select>
             </label>
 
             <div className="form-group">
-              <label htmlFor="am">Amount:</label>
+              <label htmlFor="amount">Amount:</label>
               <input
                 type="number"
                 className="form-control"
-                id="am"
+                id="amount"
                 name="amount"
                 value={formData.amount}
                 onChange={handleChange}
