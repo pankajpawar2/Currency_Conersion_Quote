@@ -13,8 +13,10 @@ export default function QuotePrice(props) {
 
   return (
     <div className="jumbotron m-4">
-      <h4 className="card-title">Quick Quote</h4>
-      <p className="lead">OFX Customer Rate</p>
+      <h4 className="card-title">
+        <span className="border-bottom border-dark ">Quick Quote</span>
+      </h4>
+      <p className="lead ">OFX Customer Rate</p>
       <p className="text-success display-5 ">{CustomerRate}</p>
       <p className="lead display-7">From</p>
       <p className="text-info display-6">

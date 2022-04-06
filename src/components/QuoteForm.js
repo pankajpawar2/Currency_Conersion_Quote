@@ -24,15 +24,28 @@ export default function QuoteForm(props) {
     nameError: "",
   });
 
+  // Validator function to check whether to and from currency are same
+  function validateCurrency() {
+    const { fromCurrency, toCurrency, amount } = formData;
+    fromCurrency === toCurrency
+      ? setFormData((prevFormData) => {
+          return {
+            ...prevFormData,
+            nameError: "From and To currency can not be same",
+          };
+        })
+      : axios
+          .get(
+            `https://api.ofx.com/PublicSite.ApiService/OFX/spotrate/Individual/${fromCurrency}/${toCurrency}/${amount}?format=json`
+          )
+          .then((res) => setQuoteData(res.data))
+          .catch((err) => console.log(err));
+  }
+
   // OFX API call on form submit
   function handleSubmit(event) {
     event.preventDefault();
-    axios
-      .get(
-        `https://api.ofx.com/PublicSite.ApiService/OFX/spotrate/Individual/${formData.fromCurrency}/${formData.toCurrency}/${formData.amount}?format=json`
-      )
-      .then((res) => setQuoteData(res.data))
-      .catch((err) => console.log(err));
+    validateCurrency();
   }
 
   // triggers on onChange event on form elements and sets state for the elements
@@ -42,16 +55,20 @@ export default function QuoteForm(props) {
       return {
         ...prevFormData,
         [name]: value,
+        // Reset error
+        nameError: "",
       };
     });
   }
 
   return (
     // Used bootstrap classes to style form elements
-    <div className="d-flex flex-row">
+    <div className="d-flex flex-row ">
       <div className="card w-50 m-2">
         <div className="card-body">
-          <h4 className="card-title">Quick Quote</h4>
+          <h4 className="card-title">
+            <span className="border-bottom border-dark">Quick Quote</span>
+          </h4>
 
           <form onSubmit={handleSubmit}>
             <div className="form-group required ">
@@ -113,6 +130,7 @@ export default function QuoteForm(props) {
                 <option value="+91">+91</option>
               </select>
               <input
+                style={{ width: "30%", height: 22 }}
                 value={formData.phone}
                 type="number"
                 name="phone"
@@ -121,8 +139,8 @@ export default function QuoteForm(props) {
             </div>
 
             <div className="form-group required ">
-              <label className="control-label" htmlFor="fromCurrency">
-                <span>From Currency</span>
+              <label htmlFor="fromCurrency">
+                <span className="control-label">From Currency</span>
                 <br />
                 <select
                   id="fromCurrency"
@@ -145,8 +163,8 @@ export default function QuoteForm(props) {
             </div>
 
             <div className="form-group required">
-              <label htmlFor="toCurrency" className="control-label">
-                <span>To Currency</span>
+              <label htmlFor="toCurrency">
+                <span className="control-label">To Currency</span>
                 <br />
                 <select
                   id="toCurrency"
@@ -168,6 +186,9 @@ export default function QuoteForm(props) {
               </label>
             </div>
             <br />
+            {formData.nameError && (
+              <span class="bg-danger">{formData.nameError}</span>
+            )}
             <div className="form-group required">
               <label className="control-label" htmlFor="amount">
                 Amount:
