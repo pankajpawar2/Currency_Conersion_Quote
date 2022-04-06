@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import axios from "axios";
 import "../App.css";
 import QuotePrice from "./QuotePrice";
-//Importing Currency Data
+
+//Importing Currency Data stored in an array
 import currencyData from "../currencyData";
 
 export default function QuoteForm(props) {
@@ -54,13 +55,13 @@ export default function QuoteForm(props) {
 
           <form onSubmit={handleSubmit}>
             <div className="form-group required ">
-              <label className="control-label" htmlFor="first">
+              <label className="control-label" htmlFor="firstName">
                 First Name
               </label>
               <input
                 type="text"
                 className="form-control"
-                id="first"
+                id="firstName"
                 name="firstName"
                 value={formData.firstName}
                 onChange={handleChange}
@@ -70,13 +71,13 @@ export default function QuoteForm(props) {
             </div>
 
             <div className="form-group required ">
-              <label className="control-label" htmlFor="last">
+              <label className="control-label" htmlFor="lastName">
                 Last Name
               </label>
               <input
                 type="text"
                 className="form-control"
-                id="last"
+                id="lastName"
                 name="lastName"
                 value={formData.lastName}
                 onChange={handleChange}
@@ -86,11 +87,11 @@ export default function QuoteForm(props) {
             </div>
 
             <div className="form-group">
-              <label htmlFor="em">Email:</label>
+              <label htmlFor="email">Email:</label>
               <input
                 type="text"
                 className="form-control"
-                id="em"
+                id="email"
                 name="email"
                 value={formData.email}
                 onChange={handleChange}
@@ -99,7 +100,7 @@ export default function QuoteForm(props) {
             </div>
 
             <div className="form-group">
-              <label htmlFor="ph">Telephone/Mobile:</label>
+              <label htmlFor="phoneCountry">Telephone/Mobile:</label>
               <br />
 
               <select
@@ -112,7 +113,6 @@ export default function QuoteForm(props) {
                 <option value="+91">+91</option>
               </select>
               <input
-                id="ph"
                 value={formData.phone}
                 type="number"
                 name="phone"
@@ -120,52 +120,58 @@ export default function QuoteForm(props) {
               />
             </div>
 
-            <label htmlFor="fromCurrency">
-              <span>From Currency</span>
-              <br />
-              <select
-                id="fromCurrency"
-                name="fromCurrency"
-                value={formData.fromCurrency}
-                onChange={handleChange}
-                required
-              >
-                <option value="">--Choose--</option>
-                {currencyData.map((currency) => (
-                  <option
-                    key={currencyData.indexOf(currency)}
-                    value={currency.slice(0, 3)}
-                  >
-                    {currency}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <div className="form-group required ">
+              <label className="control-label" htmlFor="fromCurrency">
+                <span>From Currency</span>
+                <br />
+                <select
+                  id="fromCurrency"
+                  name="fromCurrency"
+                  value={formData.fromCurrency}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">--Choose--</option>
+                  {currencyData.map((currency) => (
+                    <option
+                      key={currencyData.indexOf(currency)}
+                      value={currency.slice(0, 3)}
+                    >
+                      {currency}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
 
-            <label htmlFor="toCurrency" className="float-right">
-              <span>To Currency</span>
-              <br />
-              <select
-                id="toCurrency"
-                name="toCurrency"
-                value={formData.toCurrency}
-                onChange={handleChange}
-                required
-              >
-                <option value="">--Choose--</option>
-                {currencyData.map((currency) => (
-                  <option
-                    key={currencyData.indexOf(currency)}
-                    value={currency.slice(0, 3)}
-                  >
-                    {currency}
-                  </option>
-                ))}
-              </select>
-            </label>
-
-            <div className="form-group">
-              <label htmlFor="amount">Amount:</label>
+            <div className="form-group required">
+              <label htmlFor="toCurrency" className="control-label">
+                <span>To Currency</span>
+                <br />
+                <select
+                  id="toCurrency"
+                  name="toCurrency"
+                  value={formData.toCurrency}
+                  onChange={handleChange}
+                  required
+                >
+                  <option value="">--Choose--</option>
+                  {currencyData.map((currency) => (
+                    <option
+                      key={currencyData.indexOf(currency)}
+                      value={currency.slice(0, 3)}
+                    >
+                      {currency}
+                    </option>
+                  ))}
+                </select>
+              </label>
+            </div>
+            <br />
+            <div className="form-group required">
+              <label className="control-label" htmlFor="amount">
+                Amount:
+              </label>
               <input
                 type="number"
                 className="form-control"
@@ -173,6 +179,7 @@ export default function QuoteForm(props) {
                 name="amount"
                 value={formData.amount}
                 onChange={handleChange}
+                min="1"
                 required
               />
             </div>
