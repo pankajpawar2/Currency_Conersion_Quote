@@ -2,7 +2,6 @@
 
 const currencyList = [
   "AED-UAE Dirham",
-  "ARS-Argentine Peso",
   "AUD-Australian Dollar",
   "BHD-Bahraini Dinar",
   "BRL-Brazilian Real",
