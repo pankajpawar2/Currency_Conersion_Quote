@@ -34,7 +34,7 @@ export default function QuotePrice(props) {
         <button
           onClick={refreshPage}
           type="button"
-          className="btn btn-info bg-gradient"
+          className="btn btn-warning text-dark bg-gradient"
         >
           START NEW QUOTE
         </button>

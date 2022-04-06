@@ -205,7 +205,9 @@ export default function QuoteForm(props) {
               />
             </div>
 
-            <button className="btn btn-info bg-gradient m-2">Get Quote</button>
+            <button className="btn btn-warning text-dark bg-gradient m-2">
+              Get Quote
+            </button>
           </form>
         </div>
       </div>
