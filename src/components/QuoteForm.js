@@ -126,7 +126,10 @@ export default function QuoteForm(props) {
                 value={formData.phoneCountry}
                 onChange={handleChange}
               >
-                <option value="+61">+61</option>
+                <option value=""></option>
+                <option value="+61" selected>
+                  +61
+                </option>
                 <option value="+91">+91</option>
               </select>
               <input
