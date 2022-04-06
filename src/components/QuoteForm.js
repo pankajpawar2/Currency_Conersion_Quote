@@ -8,7 +8,11 @@ import currencyData from "../currencyData";
 
 export default function QuoteForm(props) {
   //quoteData state to store response object from OFX API call
-  const [quoteData, setQuoteData] = useState({});
+  const [quoteData, setQuoteData] = useState({
+    CustomerRate: "",
+    CustomerAmount: "",
+    Message: "",
+  });
 
   //useState hook to set state of form elements, which will be set when onChange event is triggered on the element
   const [formData, setFormData] = useState({
@@ -21,24 +25,28 @@ export default function QuoteForm(props) {
     fromCurrency: "",
     toCurrency: "",
     phoneCountry: "",
-    nameError: "",
+    error: "",
   });
+
+  const { fromCurrency, toCurrency, amount } = formData;
 
   // Validator function to check whether to and from currency are same
   function validateCurrency() {
-    const { fromCurrency, toCurrency, amount } = formData;
     fromCurrency === toCurrency
       ? setFormData((prevFormData) => {
           return {
             ...prevFormData,
-            nameError: "From and To currency can not be same",
+            error: "From and To currency can not be same",
           };
         })
       : axios
           .get(
             `https://api.ofx.com/PublicSite.ApiService/OFX/spotrate/Individual/${fromCurrency}/${toCurrency}/${amount}?format=json`
           )
-          .then((res) => setQuoteData(res.data))
+          .then((res) => {
+            console.log(res);
+            setQuoteData(res.data);
+          })
           .catch((err) => console.log(err));
   }
 
@@ -56,7 +64,7 @@ export default function QuoteForm(props) {
         ...prevFormData,
         [name]: value,
         // Reset error
-        nameError: "",
+        error: "",
       };
     });
   }
@@ -189,9 +197,7 @@ export default function QuoteForm(props) {
               </label>
             </div>
             <br />
-            {formData.nameError && (
-              <span class="bg-danger">{formData.nameError}</span>
-            )}
+            {formData.error && <span class="bg-danger">{formData.error}</span>}
             <div className="form-group required">
               <label className="control-label" htmlFor="amount">
                 Amount:
@@ -216,13 +222,18 @@ export default function QuoteForm(props) {
       </div>
       <div>
         {/* Conditional rendering of QuotePrice component after API call on form submit */}
-        {quoteData.CustomerRate && (
-          <QuotePrice
-            fromCurrency={formData.fromCurrency}
-            toCurrency={formData.toCurrency}
-            amount={formData.amount}
-            quote={quoteData}
-          />
+        {/* Checking the message in response object(which is stored in state quoteData) to see if currency transfer is allowed */}
+        {quoteData.Message.includes("do not transfer") ? (
+          <h3>{quoteData.Message}</h3>
+        ) : (
+          quoteData.Message.length > 0 && (
+            <QuotePrice
+              fromCurrency={fromCurrency}
+              toCurrency={toCurrency}
+              amount={amount}
+              quote={quoteData}
+            />
+          )
         )}
       </div>
     </div>

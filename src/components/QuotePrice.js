@@ -21,12 +21,12 @@ export default function QuotePrice(props) {
       <p className="lead display-7">From</p>
       <p className="text-info display-6">
         <span className="text-dark">{fromCurrency} </span>
-        {amount.toLocaleString()}
+        {amount}
       </p>
       <p className="lead display-7">To</p>
       <p className="text-info display-6">
         <span className="text-dark">{toCurrency} </span>
-        {CustomerAmount.toLocaleString()}
+        {CustomerAmount}
       </p>
 
       <hr className="my-2" />
