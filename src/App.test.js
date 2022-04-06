@@ -22,7 +22,7 @@ test("Checks whether the Footer Element is Displayed", () => {
 });
 
 test("Check whether form is rendered correctly", () => {
-  const { getByText, getByLabelText } = render(<QuoteForm />);
+  const { getByText } = render(<QuoteForm />);
   const firstName = getByText(/First Name/i);
   const lastName = getByText(/Last Name/i);
   expect(firstName).toBeInTheDocument();
