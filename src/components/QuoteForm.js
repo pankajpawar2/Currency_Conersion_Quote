@@ -72,7 +72,7 @@ export default function QuoteForm(props) {
   return (
     // Used bootstrap classes to style form elements
     <div className="d-flex flex-row ">
-      <div className="card w-50 m-2">
+      <div className="card w-50 m-2 card-container">
         <div className="card-body">
           <h4 className="card-title">
             <span className="border-bottom border-dark">Quick Quote</span>

@@ -2,25 +2,57 @@ import React from "react";
 
 import { render } from "@testing-library/react";
 import QuoteForm from "./components/QuoteForm";
+import Header from "./components/Header";
+import Footer from "./components/Footer";
 /**
  * Test What user would see
  */
-test("renders the form correctly", () => {
-  const { getByText, getByLabelText } = render(<QuoteForm />);
-  const nameLabel = getByText(/First Name/i);
-  const amountLabel = getByText(/Amount/i);
-  expect(nameLabel).toBeInTheDocument();
-  expect(amountLabel).toBeInTheDocument();
-  const input = getByLabelText(/Amount/i);
-  expect(input).toHaveAttribute("type", "number");
+test("Checks whether the Header Element is Displayed", () => {
+  const { getByText } = render(<Header />);
+  const element = getByText(/OFX - GET A QUICK QUOTE/i);
+  expect(element).toBeInTheDocument();
 });
 
-test("Checks for the required fields - First Name, Last Name, Amount", () => {
+test("Checks whether the Footer Element is Displayed", () => {
+  const { getByText } = render(<Footer />);
+  const element = getByText(
+    /© 2022 - Created by Pankaj Pawar - All rights reserved/i
+  );
+  expect(element).toBeInTheDocument();
+});
+
+test("Check whether form is rendered correctly", () => {
+  const { getByText, getByLabelText } = render(<QuoteForm />);
+  const firstName = getByText(/First Name/i);
+  const lastName = getByText(/Last Name/i);
+  expect(firstName).toBeInTheDocument();
+  expect(lastName).toBeInTheDocument();
+});
+
+test("Checks for the required fields - First Name, Last Name, From Currency, To Currency & Amount", () => {
   const { getByLabelText } = render(<QuoteForm />);
   const firstname = getByLabelText(/First Name/i);
   expect(firstname).toHaveAttribute("required");
-  const lastname = getByLabelText(/LAst Name/i);
+  const lastname = getByLabelText(/Last Name/i);
   expect(lastname).toHaveAttribute("required");
-  const input = getByLabelText(/Amount/i);
-  expect(input).toHaveAttribute("required");
+  const amount = getByLabelText(/Amount/i);
+  expect(amount).toHaveAttribute("required");
+  const fromCurrency = getByLabelText(/from Currency/i);
+  expect(fromCurrency).toHaveAttribute("required");
+  const toCurrency = getByLabelText(/to Currency/i);
+  expect(toCurrency).toHaveAttribute("required");
+});
+
+test("Checks the type of input fields are correct", () => {
+  const { getByLabelText } = render(<QuoteForm />);
+  const firstNameInput = getByLabelText(/First Name/i);
+  expect(firstNameInput).toHaveAttribute("type", "text");
+  const lastNameInput = getByLabelText(/Last Name/i);
+  expect(lastNameInput).toHaveAttribute("type", "text");
+});
+
+test("Checks for buttons", () => {
+  const { getByText } = render(<QuoteForm />);
+  const button = getByText("Get Quote");
+  expect(button).toBeInTheDocument();
 });

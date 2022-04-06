@@ -2,8 +2,8 @@ import React from "react";
 import QuoteForm from "./QuoteForm";
 export default function MainContent() {
   return (
-    <div>
+    <main>
       <QuoteForm />
-    </div>
+    </main>
   );
 }
