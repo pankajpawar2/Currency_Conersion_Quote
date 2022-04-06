@@ -5,7 +5,7 @@ export default function QuotePrice(props) {
   // res.data is saved in state(quoteData) maintained in QuoteForm component
   // The entire state object(quoteData) is passed as a prop called quote
   const { CustomerRate, CustomerAmount } = props.quote;
-
+  const { fromCurrency, toCurrency, amount } = props;
   // Handler to reset page when START NEW QUOTE button is clicked
   function refreshPage() {
     window.location.reload(false);
@@ -20,11 +20,13 @@ export default function QuotePrice(props) {
       <p className="text-success display-5 ">{CustomerRate}</p>
       <p className="lead display-7">From</p>
       <p className="text-info display-6">
-        <span className="text-dark">{props.from}</span> {props.amount}
+        <span className="text-dark">{fromCurrency} </span>
+        {amount.toLocaleString()}
       </p>
       <p className="lead display-7">To</p>
       <p className="text-info display-6">
-        <span className="text-dark">{props.to}</span> {CustomerAmount}
+        <span className="text-dark">{toCurrency} </span>
+        {CustomerAmount.toLocaleString()}
       </p>
 
       <hr className="my-2" />

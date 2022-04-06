@@ -194,7 +194,7 @@ export default function QuoteForm(props) {
                 Amount:
               </label>
               <input
-                type="number"
+                type="text"
                 className="form-control"
                 id="amount"
                 name="amount"
@@ -213,8 +213,8 @@ export default function QuoteForm(props) {
         {/* Conditional rendering of QuotePrice component after API call on form submit */}
         {quoteData.CustomerRate && (
           <QuotePrice
-            from={formData.fromCurrency}
-            to={formData.toCurrency}
+            fromCurrency={formData.fromCurrency}
+            toCurrency={formData.toCurrency}
             amount={formData.amount}
             quote={quoteData}
           />
