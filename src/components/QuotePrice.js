@@ -1,11 +1,12 @@
 import React from "react";
 
-export default function QuotePrice(props) {
-  // Accessing CustomerRate and CustomerAmount properties of res.data object
-  // res.data is saved in state(quoteData) maintained in QuoteForm component
-  // The entire state object(quoteData) is passed as a prop called quote
-  const { CustomerRate, CustomerAmount } = props.quote;
-  const { fromCurrency, toCurrency, amount } = props;
+export default function QuotePrice({
+  fromCurrency,
+  toCurrency,
+  amount,
+  customerAmount,
+  customerRate,
+}) {
   // Handler to reset page when START NEW QUOTE button is clicked
   function refreshPage() {
     window.location.reload(false);
@@ -17,16 +18,16 @@ export default function QuotePrice(props) {
         <span className="border-bottom border-dark ">Quick Quote</span>
       </h4>
       <p className="lead ">OFX Customer Rate</p>
-      <p className="text-success display-5 ">{CustomerRate}</p>
+      <p className="text-success display-5 ">{customerRate}</p>
       <p className="lead display-7">From</p>
       <p className="text-info display-6">
         <span className="text-dark">{fromCurrency} </span>
-        {amount}
+        {Number(amount).toFixed(2)}
       </p>
       <p className="lead display-7">To</p>
       <p className="text-info display-6">
         <span className="text-dark">{toCurrency} </span>
-        {CustomerAmount}
+        {Number(customerAmount).toFixed(2)}
       </p>
 
       <hr className="my-2" />
@@ -36,7 +37,7 @@ export default function QuotePrice(props) {
           type="button"
           className="btn btn-warning text-dark bg-gradient"
         >
-          START NEW QUOTE
+          Start New Quote
         </button>
       </p>
     </div>

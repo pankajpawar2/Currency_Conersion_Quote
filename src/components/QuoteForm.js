@@ -14,12 +14,12 @@ export default function QuoteForm(props) {
     Message: "",
   });
 
-  //useState hook to set state of form elements, which will be set when onChange event is triggered on the element
+  //useState hook to set state of form elements, which will be set when onChange event is triggered on the form element
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
-    phone: undefined,
+    phone: "",
     // Added default value of 1000
     amount: 1000,
     fromCurrency: "",
@@ -41,7 +41,9 @@ export default function QuoteForm(props) {
         })
       : axios
           .get(
-            `https://api.ofx.com/PublicSite.ApiService/OFX/spotrate/Individual/${fromCurrency}/${toCurrency}/${amount}?format=json`
+            `https://api.ofx.com/PublicSite.ApiService/OFX/spotrate/Individual/${fromCurrency}/${toCurrency}/${Number(
+              amount
+            ).toString()}?format=json`
           )
           .then((res) => {
             console.log(res);
@@ -124,28 +126,16 @@ export default function QuoteForm(props) {
               />
             </div>
 
-            <div className="form-group">
-              <label htmlFor="phoneCountry">Telephone/Mobile:</label>
-              <br />
-
-              <select
-                id="phoneCountry"
-                name="phoneCountry"
-                value={formData.phoneCountry}
-                onChange={handleChange}
-              >
-                <option value=""></option>
-                <option value="+61" selected>
-                  +61
-                </option>
-                <option value="+91">+91</option>
-              </select>
+            <div className="form-group ">
+              <label htmlFor="phone">Telephone/Mobile</label>
               <input
-                style={{ width: "30%", height: 22 }}
-                value={formData.phone}
-                type="number"
+                type="text"
+                className="form-control"
+                id="phone"
                 name="phone"
-                className="m-1"
+                value={formData.phone}
+                onChange={handleChange}
+                placeholder="Phone Number"
               />
             </div>
 
@@ -196,14 +186,17 @@ export default function QuoteForm(props) {
                 </select>
               </label>
             </div>
-            <br />
-            {formData.error && <span class="bg-danger">{formData.error}</span>}
+
+            {formData.error && (
+              <span class="bg-danger p-1">{formData.error}</span>
+            )}
             <div className="form-group required">
               <label className="control-label" htmlFor="amount">
                 Amount:
               </label>
               <input
-                type="text"
+                type="number"
+                step="0.0001"
                 className="form-control"
                 id="amount"
                 name="amount"
@@ -226,12 +219,13 @@ export default function QuoteForm(props) {
         {quoteData.Message.includes("do not transfer") ? (
           <h3>{quoteData.Message}</h3>
         ) : (
-          quoteData.Message.length > 0 && (
+          quoteData.CustomerAmount && (
             <QuotePrice
               fromCurrency={fromCurrency}
               toCurrency={toCurrency}
               amount={amount}
-              quote={quoteData}
+              customerRate={quoteData.CustomerRate}
+              customerAmount={quoteData.CustomerAmount}
             />
           )
         )}
