@@ -6,7 +6,6 @@ import QuotePrice from "./QuotePrice";
 import currencyData from "../currencyData";
 
 export default function QuoteForm(props) {
-
   //quoteData state to store response object from OFX API call
   const [quoteData, setQuoteData] = useState({});
 
@@ -16,14 +15,13 @@ export default function QuoteForm(props) {
     lastName: "",
     email: "",
     phone: undefined,
+    // Added default value of 1000
     amount: 1000,
     fromCurrency: "",
     toCurrency: "",
     phoneCountry: "",
     nameError: "",
   });
-
-  
 
   // OFX API call on form submit
   function handleSubmit(event) {
@@ -109,11 +107,8 @@ export default function QuoteForm(props) {
                 name="phoneCountry"
                 value={formData.phoneCountry}
                 onChange={handleChange}
-                
               >
-                <option value="+61" >
-                  +61
-                </option>
+                <option value="+61">+61</option>
                 <option value="+91">+91</option>
               </select>
               <input
@@ -137,7 +132,12 @@ export default function QuoteForm(props) {
               >
                 <option value="">--Choose--</option>
                 {currencyData.map((currency) => (
-                  <option key={currencyData.indexOf(currency)} value={currency.slice(0, 3)}>{currency}</option>
+                  <option
+                    key={currencyData.indexOf(currency)}
+                    value={currency.slice(0, 3)}
+                  >
+                    {currency}
+                  </option>
                 ))}
               </select>
             </label>
@@ -154,7 +154,12 @@ export default function QuoteForm(props) {
               >
                 <option value="">--Choose--</option>
                 {currencyData.map((currency) => (
-                  <option key={currencyData.indexOf(currency)} value={currency.slice(0, 3)}>{currency}</option>
+                  <option
+                    key={currencyData.indexOf(currency)}
+                    value={currency.slice(0, 3)}
+                  >
+                    {currency}
+                  </option>
                 ))}
               </select>
             </label>
