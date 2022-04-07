@@ -30,6 +30,9 @@ body {
     max-width: 200px;
   }
 
+.form-container {
+  width: 233px;
+}  
  .display-6 {
     font-size: 20px;
   }
@@ -47,7 +50,7 @@ body {
 @media only screen and (min-width: 768px) {
   
   .d-flex {
-    margin-left: 28vw;
+    margin-left: 27vw;
    
   }
 
@@ -56,6 +59,7 @@ body {
     width: 300px;
   }
 }
+
 
 @media (prefers-reduced-motion: no-preference) {
   .App-logo {

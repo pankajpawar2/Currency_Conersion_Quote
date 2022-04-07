@@ -4,9 +4,11 @@ import { render } from "@testing-library/react";
 import QuoteForm from "./components/QuoteForm";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+
 /**
  * Test What user would see
  */
+
 test("Checks whether the Header Element is Displayed", () => {
   const { getByText } = render(<Header />);
   const element = getByText(/OFX - GET A QUICK QUOTE/i);
@@ -22,7 +24,7 @@ test("Checks whether the Footer Element is Displayed", () => {
 });
 
 test("Check whether form is rendered correctly", () => {
-  const { getByText } = render(<QuoteForm />);
+  const { getByText, getByLabelText } = render(<QuoteForm />);
   const firstName = getByText(/First Name/i);
   const lastName = getByText(/Last Name/i);
   expect(firstName).toBeInTheDocument();

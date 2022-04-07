@@ -1,6 +1,6 @@
 import React from "react";
 import "../App.css";
-export default function () {
+export default function Footer() {
   return (
     <footer className="w-20 display-8 ">
       <p className="font-weight-bold text-center">

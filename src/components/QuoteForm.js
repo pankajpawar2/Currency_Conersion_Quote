@@ -29,7 +29,7 @@ export default function QuoteForm(props) {
   function onSubmit({ fromCurrency, toCurrency, amount }) {
     // event.preventDefault();
     fromCurrency === toCurrency
-      ? alert("Same currency")
+      ? alert("Error - From and To currency can not be same.")
       : axios
           .get(
             `https://api.ofx.com/PublicSite.ApiService/OFX/spotrate/Individual/${fromCurrency}/${toCurrency}/${Number(
@@ -76,10 +76,10 @@ export default function QuoteForm(props) {
                 id="firstName"
               />
               <span class="bg-danger text-white">
-                {errors.firstName && errors.firstName.type == "required"
+                {errors.firstName && errors.firstName.type === "required"
                   ? "**First Name is required**"
                   : errors.firstName &&
-                    errors.firstName.type == "pattern" &&
+                    errors.firstName.type === "pattern" &&
                     "**Please enter a valid first name**"}
               </span>
             </div>
@@ -99,10 +99,10 @@ export default function QuoteForm(props) {
                 placeholder="Last Name"
               />
               <span class="bg-danger text-white">
-                {errors.lastName && errors.lastName.type == "required"
+                {errors.lastName && errors.lastName.type === "required"
                   ? "**Last Name is required**"
                   : errors.lastName &&
-                    errors.lastName.type == "pattern" &&
+                    errors.lastName.type === "pattern" &&
                     "**Please enter a valid last name**"}
               </span>
             </div>
@@ -110,25 +110,36 @@ export default function QuoteForm(props) {
             <div className="form-group">
               <label htmlFor="email">Email:</label>
               <input
-                {...register("email")}
+                {...register("email", {
+                  pattern:
+                    /^([a-zA-Z0-9_\-\.]+)@([a-zA-Z0-9_\-\.]+)\.([a-zA-Z]{2,5})$/,
+                })}
                 type="text"
                 className="form-control"
                 id="email"
                 placeholder="Email"
               />
             </div>
-
+            {errors.email && (
+              <span class="bg-danger text-white">
+                **Please enter a valid Email.**
+              </span>
+            )}
             <div className="form-group ">
               <label htmlFor="phone">Telephone/Mobile</label>
               <input
-                {...register("phone")}
-                type="text"
+                {...register("phone", { maxLength: 13 })}
+                type="number"
                 className="form-control"
                 id="phone"
                 placeholder="Phone Number"
               />
             </div>
-
+            {errors.phone && (
+              <span class="bg-danger text-white">
+                **Please enter a valid phone number.**
+              </span>
+            )}
             <div className="form-group required ">
               <label htmlFor="fromCurrency">
                 <span className="control-label">From Currency</span>
@@ -190,16 +201,20 @@ export default function QuoteForm(props) {
               <input
                 {...register("amount", { required: true, min: 1 })}
                 type="number"
-                step="0.0001"
+                step="0.0000000000001"
                 className="form-control"
                 id="amount"
               />
-              {errors.amount && (
-                <span class="bg-danger text-white">**Amount is required**</span>
-              )}
+              <span class="bg-danger text-white">
+                {errors.amount && errors.amount.type === "required"
+                  ? "**Amount is required**"
+                  : errors.amount &&
+                    errors.amount.type === "min" &&
+                    "**Please enter amount greater than 0**"}
+              </span>
             </div>
 
-            <button className="btn btn-warning text-dark  mt-2">
+            <button className="btn btn-warning text-dark bg-gradient  mt-2">
               Get Quote
             </button>
           </form>
