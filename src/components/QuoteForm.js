@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useForm } from "react-hook-form";
 import axios from "axios";
 import "../App.css";
 import QuotePrice from "./QuotePrice";
@@ -7,38 +8,28 @@ import QuotePrice from "./QuotePrice";
 import currencyData from "../currencyData";
 
 export default function QuoteForm(props) {
+  //Using useForm hook from reaxct-hook-form - register for registering form input fields so that value is availabe on form submission and validation
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm();
+
   //quoteData state to store response object from OFX API call
   const [quoteData, setQuoteData] = useState({
     CustomerRate: "",
     CustomerAmount: "",
     Message: "",
-  });
-
-  //useState hook to set state of form elements, which will be set when onChange event is triggered on the form element
-  const [formData, setFormData] = useState({
-    firstName: "",
-    lastName: "",
-    email: "",
-    phone: "",
-    // Added default value of 1000
-    amount: 1000,
     fromCurrency: "",
     toCurrency: "",
-    phoneCountry: "",
-    error: "",
+    amount: "",
   });
 
-  const { fromCurrency, toCurrency, amount } = formData;
-
-  // Validator function to check whether to and from currency are same
-  function validateCurrency() {
+  // OFX API call on form submit
+  function onSubmit({ fromCurrency, toCurrency, amount }) {
+    // event.preventDefault();
     fromCurrency === toCurrency
-      ? setFormData((prevFormData) => {
-          return {
-            ...prevFormData,
-            error: "From and To currency can not be same",
-          };
-        })
+      ? alert("Same currency")
       : axios
           .get(
             `https://api.ofx.com/PublicSite.ApiService/OFX/spotrate/Individual/${fromCurrency}/${toCurrency}/${Number(
@@ -47,54 +38,50 @@ export default function QuoteForm(props) {
           )
           .then((res) => {
             console.log(res);
-            setQuoteData(res.data);
+            const { CustomerAmount, CustomerRate, Message } = res.data;
+            setQuoteData({
+              CustomerRate,
+              CustomerAmount,
+              Message,
+              fromCurrency,
+              toCurrency,
+              amount,
+            });
           })
           .catch((err) => console.log(err));
-  }
-
-  // OFX API call on form submit
-  function handleSubmit(event) {
-    event.preventDefault();
-    validateCurrency();
-  }
-
-  // triggers on onChange event on form elements and sets state for the elements
-  function handleChange(event) {
-    const { name, value } = event.target;
-    setFormData((prevFormData) => {
-      return {
-        ...prevFormData,
-        [name]: value,
-        // Reset error
-        error: "",
-      };
-    });
   }
 
   return (
     // Used bootstrap classes to style form elements
     <div className="d-flex flex-row ">
-      <div className="card w-50 m-2 card-container">
+      <div className="form-container">
         <div className="card-body">
           <h4 className="card-title">
             <span className="border-bottom border-dark">Quick Quote</span>
           </h4>
 
-          <form onSubmit={handleSubmit}>
+          <form onSubmit={handleSubmit(onSubmit)}>
             <div className="form-group required ">
               <label className="control-label" htmlFor="firstName">
                 First Name
               </label>
               <input
+                {...register("firstName", {
+                  required: true,
+                  pattern: /^[A-Za-z]+$/i,
+                })}
+                placeholder="First Name"
                 type="text"
                 className="form-control"
                 id="firstName"
-                name="firstName"
-                value={formData.firstName}
-                onChange={handleChange}
-                placeholder="First Name"
-                required
               />
+              <span class="bg-danger text-white">
+                {errors.firstName && errors.firstName.type == "required"
+                  ? "**First Name is required**"
+                  : errors.firstName &&
+                    errors.firstName.type == "pattern" &&
+                    "**Please enter a valid first name**"}
+              </span>
             </div>
 
             <div className="form-group required ">
@@ -102,26 +89,31 @@ export default function QuoteForm(props) {
                 Last Name
               </label>
               <input
+                {...register("lastName", {
+                  required: true,
+                  pattern: /^[A-Za-z]+$/i,
+                })}
                 type="text"
                 className="form-control"
                 id="lastName"
-                name="lastName"
-                value={formData.lastName}
-                onChange={handleChange}
                 placeholder="Last Name"
-                required
               />
+              <span class="bg-danger text-white">
+                {errors.lastName && errors.lastName.type == "required"
+                  ? "**Last Name is required**"
+                  : errors.lastName &&
+                    errors.lastName.type == "pattern" &&
+                    "**Please enter a valid last name**"}
+              </span>
             </div>
 
             <div className="form-group">
               <label htmlFor="email">Email:</label>
               <input
+                {...register("email")}
                 type="text"
                 className="form-control"
                 id="email"
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
                 placeholder="Email"
               />
             </div>
@@ -129,12 +121,10 @@ export default function QuoteForm(props) {
             <div className="form-group ">
               <label htmlFor="phone">Telephone/Mobile</label>
               <input
+                {...register("phone")}
                 type="text"
                 className="form-control"
                 id="phone"
-                name="phone"
-                value={formData.phone}
-                onChange={handleChange}
                 placeholder="Phone Number"
               />
             </div>
@@ -144,13 +134,10 @@ export default function QuoteForm(props) {
                 <span className="control-label">From Currency</span>
                 <br />
                 <select
+                  {...register("fromCurrency", { required: true })}
                   id="fromCurrency"
-                  name="fromCurrency"
-                  value={formData.fromCurrency}
-                  onChange={handleChange}
-                  required
                 >
-                  <option value="">--Choose--</option>
+                  <option value="">-- Choose --</option>
                   {currencyData.map((currency) => (
                     <option
                       key={currencyData.indexOf(currency)}
@@ -161,6 +148,12 @@ export default function QuoteForm(props) {
                   ))}
                 </select>
               </label>
+              <br />
+              {errors.fromCurrency && (
+                <span class="bg-danger text-white">
+                  **From Currency is required**
+                </span>
+              )}
             </div>
 
             <div className="form-group required">
@@ -168,13 +161,10 @@ export default function QuoteForm(props) {
                 <span className="control-label">To Currency</span>
                 <br />
                 <select
+                  {...register("toCurrency", { required: true })}
                   id="toCurrency"
-                  name="toCurrency"
-                  value={formData.toCurrency}
-                  onChange={handleChange}
-                  required
                 >
-                  <option value="">--Choose--</option>
+                  <option value="">-- Choose --</option>
                   {currencyData.map((currency) => (
                     <option
                       key={currencyData.indexOf(currency)}
@@ -185,29 +175,31 @@ export default function QuoteForm(props) {
                   ))}
                 </select>
               </label>
+              <br />
+              {errors.toCurrency && (
+                <span class="bg-danger text-white">
+                  *To Currency is required
+                </span>
+              )}
             </div>
 
-            {formData.error && (
-              <span class="bg-danger p-1">{formData.error}</span>
-            )}
             <div className="form-group required">
               <label className="control-label" htmlFor="amount">
-                Amount:
+                Amount
               </label>
               <input
+                {...register("amount", { required: true, min: 1 })}
                 type="number"
                 step="0.0001"
                 className="form-control"
                 id="amount"
-                name="amount"
-                value={formData.amount}
-                onChange={handleChange}
-                min="1"
-                required
               />
+              {errors.amount && (
+                <span class="bg-danger text-white">**Amount is required**</span>
+              )}
             </div>
 
-            <button className="btn btn-warning text-dark bg-gradient m-2">
+            <button className="btn btn-warning text-dark  mt-2">
               Get Quote
             </button>
           </form>
@@ -217,13 +209,15 @@ export default function QuoteForm(props) {
         {/* Conditional rendering of QuotePrice component after API call on form submit */}
         {/* Checking the message in response object(which is stored in state quoteData) to see if currency transfer is allowed */}
         {quoteData.Message.includes("do not transfer") ? (
-          <h3>{quoteData.Message}</h3>
+          <div class="alert alert-warning mt-5" role="alert">
+            😟 {quoteData.Message}. Please select another currency pair.
+          </div>
         ) : (
           quoteData.CustomerAmount && (
             <QuotePrice
-              fromCurrency={fromCurrency}
-              toCurrency={toCurrency}
-              amount={amount}
+              fromCurrency={quoteData.fromCurrency}
+              toCurrency={quoteData.toCurrency}
+              amount={quoteData.amount}
               customerRate={quoteData.CustomerRate}
               customerAmount={quoteData.CustomerAmount}
             />

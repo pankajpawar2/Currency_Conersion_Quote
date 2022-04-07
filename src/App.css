@@ -13,13 +13,47 @@ background-color: #FBAB7E;
 background-image: linear-gradient(62deg, #FBAB7E 0%, #F7CE68 100%);
 }
 
+.alert {
+  max-width: 300px;
+}
+
+body {
+  font-family:'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif
+}
+
 @media only screen and (max-width: 768px) {
   select {
-    max-width:120px;
+    max-width:130px;
   }
 
-  button {
-    max-width: 150px;
+  input {
+    max-width: 200px;
+  }
+
+ .display-6 {
+    font-size: 20px;
+  }
+
+  .display-7 {
+    font-size: 22px;
+  }
+
+  h3 {
+    font-size: small;
+    margin-top: 30vh;
+  }
+}
+
+@media only screen and (min-width: 768px) {
+  
+  .d-flex {
+    margin-left: 28vw;
+   
+  }
+
+  .form-container {
+  
+    width: 300px;
   }
 }
 

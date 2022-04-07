@@ -13,29 +13,32 @@ export default function QuotePrice({
   }
 
   return (
-    <div className="jumbotron m-4">
+    <div className="jumbotron m-3">
       <h4 className="card-title">
         <span className="border-bottom border-dark ">Quick Quote</span>
       </h4>
       <p className="lead ">OFX Customer Rate</p>
-      <p className="text-success display-5 ">{customerRate}</p>
-      <p className="lead display-7">From</p>
+      <p className="text-success display-5 ">
+        <strong>{customerRate}</strong>
+      </p>
+      <hr className="my-2" />
+      <p className="lead display-7">From:</p>
       <p className="text-info display-6">
         <span className="text-dark">{fromCurrency} </span>
         {Number(amount).toFixed(2)}
       </p>
-      <p className="lead display-7">To</p>
-      <p className="text-info display-6">
+      <hr className="my-2" />
+      <p className="lead display-7">To:</p>
+      <p className="text-info display-6 ">
         <span className="text-dark">{toCurrency} </span>
         {Number(customerAmount).toFixed(2)}
       </p>
-
       <hr className="my-2" />
       <p className="lead">
         <button
           onClick={refreshPage}
           type="button"
-          className="btn btn-warning text-dark bg-gradient"
+          className="btn btn-dark text-white bg-gradient"
         >
           Start New Quote
         </button>
