@@ -27,7 +27,6 @@ export default function QuoteForm(props) {
 
   // OFX API call on form submit
   function onSubmit({ fromCurrency, toCurrency, amount }) {
-    // event.preventDefault();
     fromCurrency === toCurrency
       ? alert("Error - From and To currency can not be same.")
       : axios
@@ -37,7 +36,6 @@ export default function QuoteForm(props) {
             ).toString()}?format=json`
           )
           .then((res) => {
-            console.log(res);
             const { CustomerAmount, CustomerRate, Message } = res.data;
             setQuoteData({
               CustomerRate,

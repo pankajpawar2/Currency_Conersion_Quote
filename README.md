@@ -5,7 +5,7 @@ A simple single page app built in React that will allow users to:
 - Retrieve and display the quote price
 - Start a new quote
 
-![GUI of the App](./UI.png)
+![GUI of the App](./App-UI.png)
 
 ## Deployed on Netlifty:
 
@@ -15,6 +15,8 @@ The app uses bootstrap for styling components.
 For Form, external package called "react-hook-form" has been used. This allows for better form validation.
 
 ![Form Validation Error](./Form-Validation.png)
+
+![Quote](./Quote.png)
 
 ## Available Scripts
 
