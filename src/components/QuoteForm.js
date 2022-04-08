@@ -128,7 +128,7 @@ export default function QuoteForm(props) {
             <div className="form-group ">
               <label htmlFor="phone">Telephone/Mobile</label>
               <input
-                {...register("phone", { maxLength: 13 })}
+                {...register("phone", { minLength: 8, maxLength: 13 })}
                 type="number"
                 className="form-control"
                 id="phone"
@@ -189,7 +189,7 @@ export default function QuoteForm(props) {
               <br />
               {errors.toCurrency && (
                 <span class="bg-danger text-white">
-                  *To Currency is required
+                  **To Currency is required**
                 </span>
               )}
             </div>

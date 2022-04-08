@@ -31,20 +31,6 @@ test("Check whether form is rendered correctly", () => {
   expect(lastName).toBeInTheDocument();
 });
 
-test("Checks for the required fields - First Name, Last Name, From Currency, To Currency & Amount", () => {
-  const { getByLabelText } = render(<QuoteForm />);
-  const firstname = getByLabelText(/First Name/i);
-  expect(firstname).toHaveAttribute("required");
-  const lastname = getByLabelText(/Last Name/i);
-  expect(lastname).toHaveAttribute("required");
-  const amount = getByLabelText(/Amount/i);
-  expect(amount).toHaveAttribute("required");
-  const fromCurrency = getByLabelText(/from Currency/i);
-  expect(fromCurrency).toHaveAttribute("required");
-  const toCurrency = getByLabelText(/to Currency/i);
-  expect(toCurrency).toHaveAttribute("required");
-});
-
 test("Checks the type of input fields are correct", () => {
   const { getByLabelText } = render(<QuoteForm />);
   const firstNameInput = getByLabelText(/First Name/i);
