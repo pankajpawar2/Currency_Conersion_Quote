@@ -46,7 +46,10 @@ export default function QuoteForm(props) {
               amount,
             });
           })
-          .catch((err) => console.log(err));
+          .catch((err) =>
+            // Added alert message if there is an error on API call
+            alert("Sorry, Something went wrong. Please try again.")
+          );
   }
 
   return (
@@ -73,7 +76,7 @@ export default function QuoteForm(props) {
                 className="form-control"
                 id="firstName"
               />
-              <span class="bg-danger text-white">
+              <span className="bg-danger text-white">
                 {errors.firstName && errors.firstName.type === "required"
                   ? "**First Name is required**"
                   : errors.firstName &&
@@ -96,7 +99,7 @@ export default function QuoteForm(props) {
                 id="lastName"
                 placeholder="Last Name"
               />
-              <span class="bg-danger text-white">
+              <span className="bg-danger text-white">
                 {errors.lastName && errors.lastName.type === "required"
                   ? "**Last Name is required**"
                   : errors.lastName &&
@@ -119,7 +122,7 @@ export default function QuoteForm(props) {
               />
             </div>
             {errors.email && (
-              <span class="bg-danger text-white">
+              <span className="bg-danger text-white">
                 **Please enter a valid Email.**
               </span>
             )}
@@ -127,14 +130,14 @@ export default function QuoteForm(props) {
               <label htmlFor="phone">Telephone/Mobile</label>
               <input
                 {...register("phone", { minLength: 8, maxLength: 13 })}
-                type="number"
+                type="text"
                 className="form-control"
                 id="phone"
                 placeholder="Phone Number"
               />
             </div>
             {errors.phone && (
-              <span class="bg-danger text-white">
+              <span className="bg-danger text-white">
                 **Please enter a valid phone number.**
               </span>
             )}
@@ -143,7 +146,10 @@ export default function QuoteForm(props) {
                 <span className="control-label">From Currency</span>
                 <br />
                 <select
-                  {...register("fromCurrency", { required: true })}
+                  {...register("fromCurrency", {
+                    required: true,
+                    value: quoteData.fromCurrency,
+                  })}
                   id="fromCurrency"
                 >
                   <option value="">-- Choose --</option>
@@ -159,7 +165,7 @@ export default function QuoteForm(props) {
               </label>
               <br />
               {errors.fromCurrency && (
-                <span class="bg-danger text-white">
+                <span className="bg-danger text-white">
                   **From Currency is required**
                 </span>
               )}
@@ -170,7 +176,10 @@ export default function QuoteForm(props) {
                 <span className="control-label">To Currency</span>
                 <br />
                 <select
-                  {...register("toCurrency", { required: true })}
+                  {...register("toCurrency", {
+                    required: true,
+                    value: quoteData.toCurrency,
+                  })}
                   id="toCurrency"
                 >
                   <option value="">-- Choose --</option>
@@ -186,7 +195,7 @@ export default function QuoteForm(props) {
               </label>
               <br />
               {errors.toCurrency && (
-                <span class="bg-danger text-white">
+                <span className="bg-danger text-white">
                   **To Currency is required**
                 </span>
               )}
@@ -203,7 +212,7 @@ export default function QuoteForm(props) {
                 className="form-control"
                 id="amount"
               />
-              <span class="bg-danger text-white">
+              <span className="bg-danger text-white">
                 {errors.amount && errors.amount.type === "required"
                   ? "**Amount is required**"
                   : errors.amount &&
@@ -222,7 +231,7 @@ export default function QuoteForm(props) {
         {/* Conditional rendering of QuotePrice component after API call on form submit */}
         {/* Checking the message in response object(which is stored in state quoteData) to see if currency transfer is allowed */}
         {quoteData.Message.includes("do not transfer") ? (
-          <div class="alert alert-warning mt-5" role="alert">
+          <div className="alert alert-warning mt-5" role="alert">
             😟 {quoteData.Message}. Please select another currency pair.
           </div>
         ) : (
